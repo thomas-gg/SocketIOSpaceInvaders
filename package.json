@@ -1,0 +1,17 @@
+{
+  "name": "javascriptchatsocket",
+  "version": "1.0.0",
+  "description": "Chat messenger",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index",
+    "dev" : "nodemon index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "moment": "^2.26.0",
+    "socket.io": "^2.3.0"
+  }
+}
