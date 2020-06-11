@@ -17,6 +17,11 @@ socket.on('roomUsers', ({ room, users }) => {
     outputUsers(users);
 })
 
+// output roomfull
+socket.on('roomFull', (message) => {
+    outputMessage(message);
+})
+
 // message from server
 socket.on('message', message=> {
     //console.log(message);

@@ -13,33 +13,43 @@ const io = socketio(server);
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'public/js')));
 
-const botName = 'Bot';
+const botName = 'Home Base';
 Aliens = [];
 Bombs = [];
 
 io.on('connection', socket => {
-    socket.emit('message', formatMessage(botName,'WELCOMEEEE'));
-    
     socket.on('joinRoom', ({username,room}) => {
-        const user = userJoin(socket.id, username, room);
+
+        if(getRoomUsers(room).length >= 2) {
+            socket.emit('roomFull',formatMessage(botName,'this is room is full! try another id...'));
+        }
+        else {
+            if(getRoomUsers(room).length >= 1) {
+                socket.emit('message', formatMessage(botName,'WELCOME!'));
+            }
+            else {
+                socket.emit('message', formatMessage(botName,'WELCOME! Waiting for another player to join...'));
+            }
+            const user = userJoin(socket.id, username, room);
+            
+            socket.join(user.room);
         
-        socket.join(user.room);
-    
-        // broadcast an entry except to client connecting
-        socket.broadcast.to(user.room).emit('message', formatMessage(botName,`${user.username} has joined`));
-        
-        // send users and room info
-        io.to(user.room).emit('roomUsers', {
-            room: user.room,
-            users: getRoomUsers(user.room)
-        });
+            // broadcast an entry except to client connecting
+            socket.broadcast.to(user.room).emit('message', formatMessage(botName,`${user.username} has joined`));
+            
+            // send users and room info
+            io.to(user.room).emit('roomUsers', {
+                room: user.room,
+                users: getRoomUsers(user.room)
+            });
+        }
     });
     
     // start game
     socket.on('start', (message) => {
         const user = getCurrentUser(socket.id);
         
-        if(getRoomUsers(user.room).length > 1){
+        if(user != undefined && getRoomUsers(user.room).length > 1){
             socket.emit('playerOne')
         }
     });
@@ -62,13 +72,13 @@ io.on('connection', socket => {
 
     socket.on('chatMessage', (message) => {
         const user = getCurrentUser(socket.id);
-
-        io.to(user.room).emit('message',formatMessage(user.username,message));
+        if(user != undefined)
+            io.to(user.room).emit('message',formatMessage(user.username,message));
     });
 
     socket.on('disconnect', () => {
         const user = userLeave(socket.id);
-        if(user){
+        if(user != undefined){
             io.to(user.room).emit('message', formatMessage(botName,`${user.username} has left :/`));
             io.to(user.room).emit('dc');
             // send users and room info
