@@ -11,6 +11,8 @@ let otherScore = 0;
 let grey = [100,100,100];
 let blue = [66,149,245];
 let pink = [255,149,245];
+let explosions = [];
+let otherExplosions = [];
 
 // check if game may start
 socket.emit("start");
@@ -76,6 +78,15 @@ socket.on('updated', (data) => {
     }
     otherBombs.push(extraBomb);
   }
+
+  // push otherExplosions
+  for(let w = 0; w < data.explosions.length; w++) {
+    if(otherExplosions[w] == undefined){
+      let explosion = new Explosion(data.explosions[w].x,data.explosions[w].y);
+      otherExplosions.push(explosion);
+    }
+  } 
+
   otherScore = data.score;
 });
 
@@ -140,6 +151,14 @@ function draw() {
   }
   otherBombs = [];
 
+  // show and reset other player's explosions
+  for(let i = 0; i < otherExplosions.length; i++) {
+    if(otherExplosions[i].show()){
+      otherExplosions.splice(i,1);
+      i--;
+    }
+  }
+
   // show and move player's bombs
   for(let i = 0; i < Bombs.length; i++) {
     fill(30,30,30);
@@ -156,6 +175,8 @@ function draw() {
     // bomb hits Alien
     for(let w = 0; w < Aliens.length; w++) {
       if(Bombs[i].hit(Aliens[w])){
+        let explosion = new Explosion(Aliens[w].x,Aliens[w].y)
+        explosions.push(explosion);
         Aliens.splice(w,1);
         Bombs.splice(i,1);
         w--;
@@ -165,6 +186,13 @@ function draw() {
       }
     }
   }
+   // explosion draw
+   for(let w = 0; w < explosions.length; w++) {
+    if(explosions[w].show()){
+      explosions.splice(w,1);
+      w--;
+    }
+  } 
   delayed++;
 
  /* if (keyIsPressed === true && key === ' ' && delayed >= delay && ship != undefined) {
@@ -185,6 +213,7 @@ function draw() {
     Aliens: Aliens,
     Bombs: Bombs,
     ship: ship,
+    explosions: explosions,
     score: score
   }
   socket.emit("update",data);
