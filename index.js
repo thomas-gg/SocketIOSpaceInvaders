@@ -9,7 +9,7 @@ const app = express();
 // needed for socket.io
 const server = http.createServer(app);
 const io = socketio(server);
-// Set static folder
+// Set static folders
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'public/js')));
 
@@ -21,10 +21,10 @@ io.on('connection', socket => {
     socket.on('joinRoom', ({username,room}) => {
 
         if(getRoomUsers(room).length >= 2) {
-            socket.emit('roomFull',formatMessage(botName,'this is room is full! try another id...'));
+            socket.emit('roomFull',formatMessage(botName,'this room is full! Leave room and try another id...'));
         }
         else {
-            if(getRoomUsers(room).length >= 1) {
+            if(getRoomUsers(room).length == 1) {
                 socket.emit('message', formatMessage(botName,'WELCOME!'));
             }
             else {
