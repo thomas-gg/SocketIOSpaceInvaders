@@ -1,4 +1,4 @@
-function Ship() {
+function Ship(otherShip) {
   this.x = width/2;
   this.y = height-30;
   this.r = 168;
@@ -8,6 +8,11 @@ function Ship() {
   //168,50,50 --> 168,168,50 --> 50,168,50 --> 50,168,168 --> 50,50,168 --> 168,50,168 --> repeat
   this.show = function() {
     fill(this.r,this.g,this.b);
+    if(!otherShip)
+      stroke(66,149,245);
+    else
+      stroke(255,149,245);
+    strokeWeight(2)
     beginShape();
     vertex(this.x + 20, this.y + 0);
     vertex(this.x + 0, this.y + 20);
@@ -15,6 +20,8 @@ function Ship() {
     vertex(this.x + 40, this.y + 25);
     vertex(this.x + 40, this.y + 20);
     endShape(CLOSE);
+    stroke(0, 0, 0);
+    strokeWeight(1)
     this.colorChange();
   }
 

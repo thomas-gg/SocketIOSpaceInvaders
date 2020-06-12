@@ -6,6 +6,8 @@ let numAliens = 8;
 let playerOne = false;
 var Aliens = [];
 var otherBombs = [];
+let score = 0;
+let otherScore = 0;
 
 socket.emit("start");
 socket.on('playerOne', () => {
@@ -55,6 +57,7 @@ socket.on('updated', (data) => {
       sizeY:data.Bombs[i].sizeY
     }
     otherBombs.push(Bomby);
+    otherScore = data.score;
   }
 });
 
@@ -69,13 +72,14 @@ function setup() {
   var canvas = createCanvas(700, 500); 
   // Move the canvas so it’s inside our <div id="sketch-holder">.
   canvas.parent('sketch-holder');
-  ship = new Ship();
-  otherShip = new Ship();
+  ship = new Ship(false);
+  otherShip = new Ship(true);
   for(let i = 0; i < numAliens; i++){
     let a = new Alien(random(0,width),random(0,height/2),20);
     Aliens.push(a);
   }
   Bombs = [];
+  textSize(20);
 }
 
 function draw() {
@@ -83,6 +87,26 @@ function draw() {
   if(!starts){
     return;
   }
+  var grey = [100,100,100];
+  var blue = [66,149,245];
+  var pink = [255,149,245];
+  var string = [
+    ["score: ", grey],
+    [score + " ", blue],
+    [otherScore , pink],
+  ];
+  drawtext(10, 20, string );
+  fill(100,100,100)
+
+  // if other ship play again
+  if(Aliens.length == 0 && otherShip != undefined && ship != undefined){
+    for(let i = 0; i < numAliens; i++){
+      let a = new Alien(random(0,width),random(0,height/2),20);
+      Aliens.push(a);
+    }
+    socket.emit("start");
+  }
+
   // show Aliens
   for(let i = 0; i < Aliens.length; i++) {
     Aliens[i].show();
@@ -94,7 +118,7 @@ function draw() {
     }
   }
 
-  fill(255,149,245); 
+  fill(pink); 
   for(let i = 0; i < otherBombs.length; i++) {
     ellipse(otherBombs[i].x,otherBombs[i].y,otherBombs[i].sizeX,otherBombs[i].sizeY);
   }
@@ -119,6 +143,7 @@ function draw() {
         Bombs.splice(i,1);
         w--;
         i--;
+        score++;
         break;
       }
     }
@@ -140,7 +165,8 @@ function draw() {
   let data = { 
     Aliens: Aliens,
     Bombs: Bombs,
-    ship: ship
+    ship: ship,
+    score: score
   }
   socket.emit("update",data);
 }
@@ -162,5 +188,19 @@ function touchStarted() {
       ball = new Bomb(ship.x+20,ship.y+20);  
       Bombs.push(ball);  
       delayed = 0;
+  }
+}
+
+function drawtext( x, y, text_array ) {
+  
+  var pos_x = x;
+  for ( var i = 0; i < text_array.length; ++ i ) {
+      var part = text_array[i];
+      var t = part[0];
+      var c = part[1];
+      var w = textWidth( t );
+      fill( c );
+      text( t, pos_x, y);
+      pos_x += w;
   }
 }
