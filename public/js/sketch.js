@@ -36,7 +36,7 @@ socket.on('dc', () => {
 // overwrite the x and y positions of each alien to match the server and begin
 socket.on('begin',(aliens) => {
   for(let i = 0; i < numAliens; i++){
-    if(aliens[i] != undefined){
+    if(aliens[i] != undefined && Aliens[i] != undefined){
       Aliens[i].x = aliens[i].x;
       Aliens[i].y = aliens[i].y;
     }
@@ -120,15 +120,16 @@ function draw() {
     }
     socket.emit("start");
   }
-
-  // show & move Aliens
-  for(let i = 0; i < Aliens.length; i++) {
-    Aliens[i].show();
-    Aliens[i].move(); 
-    if(Aliens[i].hit(ship)){
-      ship = undefined;
-      Aliens.splice(i,1);
-      i--;
+  else {
+    // show & move Aliens
+    for(let i = 0; i < Aliens.length; i++) {
+      Aliens[i].show();
+      Aliens[i].move(); 
+      if(Aliens[i].hit(ship)){
+        ship = undefined;
+        Aliens.splice(i,1);
+        i--;
+      }
     }
   }
 
