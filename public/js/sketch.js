@@ -28,6 +28,8 @@ socket.on('dc', () => {
   Aliens = [];
   otherBombs = [];
   Bombs = [];
+  score = 0; 
+  otherScore = 0;
   setup();
 });
 
