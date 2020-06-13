@@ -33,3 +33,4 @@ If you have a mobile device which has chrome and is connected to the same wifi a
 ### Resources:
 * [Socket.io Emitting Events Sheet (Extremely Important & Simple!)](https://socket.io/docs/emit-cheatsheet/)
 * [Useful p5.js Examples](https://p5js.org/examples/)
+* [Credit to Traversy Media (most html/css/utils/messages)](https://www.youtube.com/watch?v=jD7FnbI76Hg&t=1050s)
