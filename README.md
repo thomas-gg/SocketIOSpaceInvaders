@@ -1,7 +1,7 @@
 # socket-io p5jsgame
 
 ## 1. Getting Started
-An understanding of JavaScript and NodeJS will be helpful, but this is a simple implementation showing simple characteristics of the technologies so this makes for a great beginning to understanding multiplayer gameplay
+An understanding of JavaScript and NodeJS will be helpful, but this is a simple implementation showing simple characteristics of the technologies so this makes for a great beginning to understanding multiplayer gameplay. This project provides a template for chat communication and gameplay with socket rooms (of strictly 2 people, the number of people is editable).
 
 ## 2. Install/Run
 ### Prerequisites:
