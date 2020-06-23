@@ -9,9 +9,22 @@
   },
   "author": "",
   "license": "ISC",
+  "keywords": [
+    "socket io",
+    "p5.js",
+    "Space Invaders",
+    "javascript",
+    "sockets"
+  ],
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.26.0",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-terser": "^1.2.0",
+    "gulp-uglify": "^3.0.2"
   }
 }
