@@ -7,6 +7,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/addons/p5.sound.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha256-ijqLssetA1NMNjZ+w1zaUafQQLm4IW5OoM8O+4tatME=" crossorigin="anonymous"></script>
+  <!--<script src="js/game-bundle.min.js"></script>-->
   <link rel="stylesheet" href="css/style.css">
   <title>XD</title>
 </head>
@@ -54,20 +56,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.9.4/qs.min.js" integrity="sha256-ijqLssetA1NMNjZ+w1zaUafQQLm4IW5OoM8O+4tatME=" crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script src="js/main.js"></script>
-  <script src="Alien.js"></script>
+  <!-- <script src="Alien.js"></script>
   <script src="Ship.js"></script>
   <script src="Bomb.js"></script>
+  <script src="Explosion.js"></script> -->
+  <script src="js/game-bundle.min.js"></script>
   <script src="sketch.js"></script>
 
-
-    
-  <script>
-    // prevent movement from space
-    window.addEventListener('keydown', function(e) {
-      if(e.keyCode == 32 && e.target == document.body) {
-        e.preventDefault();
-      }
-    });
-  </script>
 </body>
 </html>

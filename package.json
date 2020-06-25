@@ -5,17 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "node index",
-    "dev" : "nodemon index"
+    "dev": "nodemon index"
   },
   "author": "",
   "license": "ISC",
-  "keywords": [
-    "socket io",
-    "p5.js",
-    "Space Invaders",
-    "javascript",
-    "sockets"
-  ],
   "dependencies": {
     "express": "^4.17.1",
     "moment": "^2.26.0",

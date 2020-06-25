@@ -48,9 +48,8 @@ socket.on('begin',(aliens) => {
 
 // update otherShip, otherBombs, and otherAliens (from server)
 socket.on('updated', (data) => {
-  
   // the server has less aliens reset them
-  while(data.Aliens.length < Aliens.length){
+  while(data != undefined && data.Aliens.length < Aliens.length){
     Aliens.splice(Aliens.length-1,1);
     for(let i = 0; i < data.Aliens.length; i++){
       Aliens[i].x = data.Aliens[i].x;
@@ -160,8 +159,8 @@ function draw() {
   }
 
   // show and move player's bombs
+  fill(blue);
   for(let i = 0; i < Bombs.length; i++) {
-    fill(30,30,30);
     Bombs[i].show();
     Bombs[i].move(); 
     
@@ -169,7 +168,7 @@ function draw() {
     if(Bombs[i].y < 0){
       Bombs.splice(i,1);
       i--;
-      break;
+      continue;
     }
     
     // bomb hits Alien

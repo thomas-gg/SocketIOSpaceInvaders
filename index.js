@@ -19,7 +19,7 @@ Bombs = [];
 
 io.on('connection', socket => {
     socket.on('joinRoom', ({username,room}) => {
-
+        console.log("User: " + username);
         if(getRoomUsers(room).length >= 2) {
             socket.emit('roomFull',formatMessage(botName,'this room is full! Leave room and try another id...'));
         }
@@ -81,6 +81,7 @@ io.on('connection', socket => {
         if(user != undefined){
             io.to(user.room).emit('message', formatMessage(botName,`${user.username} has left :/`));
             io.to(user.room).emit('dc');
+            console.log("User disconnected: " + user.username);
             // send users and room info
             io.to(user.room).emit('roomUsers', {
                 room: user.room,

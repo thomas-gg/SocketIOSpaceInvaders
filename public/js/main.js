@@ -72,3 +72,9 @@ function outputUsers (users){
         ${users.map(user => `<li>${user.username}</li>`).join('')}
     `;
 }
+// prevent movement from space
+window.addEventListener('keydown', function(e) {
+    if(e.keyCode == 32 && e.target == document.body) {
+      e.preventDefault();
+    }
+});
