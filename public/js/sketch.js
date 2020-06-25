@@ -68,14 +68,14 @@ socket.on('updated', (data) => {
   }
   
   // push all of the server's bombs into otherBombs
+  if(data.hitBomb > -1){
+    otherBombs.splice(data.hitBomb,1);
+  }
   for(let i = 0; i < data.Bombs.length; i++){
-    extraBomb = {
-      x:data.Bombs[i].x,
-      y:data.Bombs[i].y,
-      sizeX:data.Bombs[i].sizeX,
-      sizeY:data.Bombs[i].sizeY
+    if(otherBombs[i] == undefined){
+      let extraBomb = new Bomb(data.Bombs[i].x,data.Bombs[i].y);
+      otherBombs.push(extraBomb);
     }
-    otherBombs.push(extraBomb);
   }
 
   // push otherExplosions
@@ -145,10 +145,16 @@ function draw() {
 
   // show and reset other player's bombs
   fill(pink); 
+  // show and reset other player's explosions
   for(let i = 0; i < otherBombs.length; i++) {
-    ellipse(otherBombs[i].x,otherBombs[i].y,otherBombs[i].sizeX,otherBombs[i].sizeY);
+    otherBombs[i].show();
+    otherBombs[i].move();
+    if(otherBombs[i].y < 0){
+      otherBombs.splice(i,1);
+      i--;
+      continue;
+    }
   }
-  otherBombs = [];
 
   // show and reset other player's explosions
   for(let i = 0; i < otherExplosions.length; i++) {
@@ -158,7 +164,9 @@ function draw() {
     }
   }
 
+
   // show and move player's bombs
+  let hitBomb = -1;
   fill(blue);
   for(let i = 0; i < Bombs.length; i++) {
     Bombs[i].show();
@@ -171,6 +179,7 @@ function draw() {
       continue;
     }
     
+    
     // bomb hits Alien
     for(let w = 0; w < Aliens.length; w++) {
       if(Bombs[i].hit(Aliens[w])){
@@ -178,6 +187,7 @@ function draw() {
         explosions.push(explosion);
         Aliens.splice(w,1);
         Bombs.splice(i,1);
+        hitBomb = i;
         w--;
         i--;
         score++;
@@ -213,7 +223,8 @@ function draw() {
     Bombs: Bombs,
     ship: ship,
     explosions: explosions,
-    score: score
+    score: score,
+    hitBomb: hitBomb
   }
   socket.emit("update",data);
 }
